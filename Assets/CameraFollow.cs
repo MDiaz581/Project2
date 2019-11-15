@@ -6,39 +6,36 @@ public class CameraFollow : MonoBehaviour
 {
     public Transform playerCam, character, centerPoint;
 
-    private float mouseX, mouseY;
-    public float mouseSensitivity = 10f;
-    public Vector3 offset;
-    public Vector3 characterRotation;
-    public Quaternion characterQuaternion;
-    public float characterRotationX;
-    public float characterRotationY;
-    public float characterRotationZ;
+    private float centerpointYRotation;
 
-    public float zoom;
+    //Speed at which the camera will rotate when using right stick left and right
+    public float rotationSpeed = 10f;
+
+    //Moves centerpoint away from the player, this means the camera looks slightly above the player rather than at the player
+    public Vector3 offset;
+
+    //Angles Camera slightly
+    public float cameraYpos;
+
+    //Zoom variables, determines how far or close the camera is to the center point
+    private float zoom;
     public float zoomSpeed = 2;
     public float zoomMin = -2f;
     public float zoomMax = -10f;
 
-    public float rotationSpeed = 5f;
 
     void Start()
     {
+        //Automatically set zoom to the minimum value
         zoom = zoomMin;
     }
 
     void LateUpdate()
     {
-
-        characterRotationX = character.rotation.x;
-        characterRotationY = character.rotation.y;
-        characterRotationZ = character.rotation.z;
-
-        characterRotation = new Vector3(characterRotationX, characterRotationY, characterRotationZ);
-
-        characterQuaternion = Quaternion.Euler(characterRotationX, characterRotationY, characterRotationZ);
-
+        //Takes the up and down of the right stick multiplies it by speed and time, down zooms our, up zooms out.
         zoom += Input.GetAxis("CameraZoom") * zoomSpeed * Time.deltaTime;
+
+        //These prevent zoom from going past the max and min
         if(zoom > zoomMin)
         {
             zoom = zoomMin;
@@ -47,22 +44,24 @@ public class CameraFollow : MonoBehaviour
         {
             zoom = zoomMax;
         }
-        playerCam.transform.localPosition = new Vector3(0, 0, zoom);
 
-        mouseX += Input.GetAxis("CameraHorizontal") * mouseSensitivity;
-        //mouseY -= Input.GetAxis("Mouse Y");
+        //Takes camera position and moves it on the Z position, we use the cameraYpos to angle it slightly
+        playerCam.transform.localPosition = new Vector3(0, cameraYpos, zoom);
 
-        
+        //Changes the centerpoint's Y axis based off of the right stick's left and right movement
+        centerpointYRotation += Input.GetAxis("CameraHorizontal") * rotationSpeed * Time.deltaTime;
+
+        //Forces camera to constantly "Look at" the centerpoint
         playerCam.LookAt(centerPoint);
 
-        centerPoint.localRotation = Quaternion.Euler(10, mouseX, 0) * character.rotation;
+        //rotates the centerpoint based off of the centerpointYRotation and the player character's rotation
+        centerPoint.localRotation = Quaternion.Euler(0, centerpointYRotation, 0) * character.rotation;
 
-
+        //Moves the centerpoint with the player character's position + an offset
         centerPoint.position = new Vector3(character.position.x, character.position.y, character.position.z) + offset;
 
-        //Quaternion turnAngle = Quaternion.Euler(0, centerPoint.eulerAngles.y, 0);
-
-        mouseX = Mathf.Clamp(mouseX, -60f - centerPoint.rotation.y, 60 + centerPoint.rotation.y); //This restricts camera moving it clamping it at -60 to 60
+        //This restricts camera moving it clamping it at -60 to 60
+        centerpointYRotation = Mathf.Clamp(centerpointYRotation, -60f - centerPoint.rotation.y, 60 + centerPoint.rotation.y); 
 
 
     }
