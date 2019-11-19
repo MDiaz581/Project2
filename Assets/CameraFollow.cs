@@ -4,6 +4,10 @@ using UnityEngine;
 
 public class CameraFollow : MonoBehaviour
 {
+
+    /** This Script will not be used, it may contain useful code for something, but not for the camera I wanted **/
+
+    
     public Transform playerCam, character, centerPoint;
 
     private float centerpointYRotation;
