@@ -19,10 +19,14 @@ public class PlayerManager : MonoBehaviour
     [Tooltip("Speed will increase by this value every second")]
     public float acceleration;
 
+    [Tooltip("This cannot be changed, this just for testing purposes")]
     //Keep public for testing purposes ie. watching deceleration and accelteration rate
     public float speed;
 
     private float translation;
+
+    [Tooltip("This changes how fast you decelerate when braking by multiplying the value. A higher number allows you to brake faster. This value should be greater than 0.")]
+    public float brakeRate;
 
     
 
@@ -86,9 +90,15 @@ public class PlayerManager : MonoBehaviour
 
     private float eulerAngZ;
 
+    [Header("Controller Number")]
+    public int playerNumber;
+
     [Header("Testing Bool")]
     //This is for testing purposes
     public bool onEnabled;
+
+    
+    
 
     // Start is called before the first frame update
     void Start()
@@ -97,12 +107,12 @@ public class PlayerManager : MonoBehaviour
 
         //Calculates the handling while drifting
         driftHandling = handling + drift;
+        
 
     }
 
     private void Update()
     {
-
         //These check the local Eular angle it grabs value based off of 360 rotation not -180 to 180
         eulerAngX = transform.localEulerAngles.x;
         eulerAngY = transform.localEulerAngles.y;
@@ -119,11 +129,10 @@ public class PlayerManager : MonoBehaviour
 
         /* -------------------------------------------------------- Movement Manager -------------------------------------------------- */
 
-
         //This Drives
-        if (Input.GetAxis("Drive") >= 1 && Input.GetAxis("Brake") < 1 && onGround)
+            if (Input.GetAxis("Drive" + playerNumber) >= 1 && Input.GetAxis("Brake" + playerNumber) < 1 && onGround)
         {
-            Debug.Log("moving??");
+            
             moving = true;
             if(speed < maxSpeed)
             {
@@ -131,8 +140,9 @@ public class PlayerManager : MonoBehaviour
             }
         }
         //This Brakes and Reverses
-        if (Input.GetAxis("Brake") >= 1 && onGround)
+        if (Input.GetAxis("Brake" + playerNumber) >= 1 && onGround)
         {
+            
             Debug.Log("Braked");
 
             moving = true;
@@ -140,13 +150,15 @@ public class PlayerManager : MonoBehaviour
             //Reversing is slower than driving forward therefore is calculated differently than normal deceleration
             if (speed > -maxSpeed / 4)
             {
-                speed -= (acceleration - (acceleration / 10)) * Time.deltaTime;
+               // speed -= (acceleration - (acceleration / 1000)) * Time.deltaTime;
+                speed -= (deceleration * brakeRate) * Time.deltaTime;
             }
         }
 
         //This decelerates when neither driving or braking
-        if (Input.GetAxis("Drive") < 1 && Input.GetAxis("Brake") < 1 || !onGround)
+        if (Input.GetAxis("Drive" + playerNumber) < 1 && Input.GetAxis("Brake" + playerNumber) < 1 || !onGround)
         {
+
             moving = false;
 
             //Decelaration Calculation while on ground
@@ -199,14 +211,17 @@ public class PlayerManager : MonoBehaviour
         /* -------------------------------------------------------- Handling and Drift Manager -------------------------------------------------- */
 
         //If right trigger is pressed, then allow increased handling except while in air
-        if (Input.GetAxis("Drift") >= 1 && onGround)
+        if (Input.GetAxis("Drift" + playerNumber) >= 1 && onGround)
         {
+           
+
             handling = driftHandling;
-            if (Input.GetAxis("Horizontal") > 0 && !isDriftingLeft && speed > 0)
+            if (Input.GetAxis("Horizontal" + playerNumber) > 0 && !isDriftingLeft && speed > 0)
             {
+                
                 isDriftingRight = true;
             }
-            if (Input.GetAxis("Horizontal") < 0  && !isDriftingRight && speed > 0)
+            if (Input.GetAxis("Horizontal" + playerNumber) < 0  && !isDriftingRight && speed > 0)
             {
                 isDriftingLeft = true;
 
@@ -221,18 +236,18 @@ public class PlayerManager : MonoBehaviour
             isDriftingRight = false;
         }
         //Only allow the player to turn if speed is > 1 or -1 OR if right trigger is pressed
-        if (Mathf.Abs(speed) > 0 || Input.GetAxis("Drift") >= 1)
+        if (Mathf.Abs(speed) > 0 || Input.GetAxis("Drift" + playerNumber) >= 1)
         {
             //Handles normally if in the air
             if (onGround)
             {
                 //This float adds a value depending on the left sticks left (-1) and right position (1) and multiply by handling.
-                horizontalRotation = Input.GetAxis("Horizontal") * handling;
+                horizontalRotation = Input.GetAxis("Horizontal" + playerNumber) * handling;
             }
             //Handling is severly reduced while in air, but still gives slight control.
             else
             {
-                horizontalRotation = (Input.GetAxis("Horizontal") * handling) / airHandling;
+                horizontalRotation = (Input.GetAxis("Horizontal" + playerNumber) * handling) / airHandling;
             }
 
 
@@ -242,11 +257,11 @@ public class PlayerManager : MonoBehaviour
             //This actually rotates the player on the Y axis determined by the float.
             if (isDriftingRight)
             {
-                transform.Rotate(0, horizontalRotation/2 + 2, 0);
+                transform.Rotate(0, horizontalRotation/2 + 1.5f, 0);
             }
             else if (isDriftingLeft)
             {
-                transform.Rotate(0, horizontalRotation/2 - 2, 0);
+                transform.Rotate(0, horizontalRotation/2 - 1.5f, 0);
             }
             else
             {
@@ -263,7 +278,7 @@ public class PlayerManager : MonoBehaviour
         if (!onGround)
         {
             //This allows you to tilt forward or backwards while in the air.
-            rotationX = (Input.GetAxis("Vertical") * airControl) * Time.deltaTime;
+            rotationX = (Input.GetAxis("Vertical" + playerNumber) * airControl) * Time.deltaTime;
 
             transform.Rotate(rotationX, 0, 0);
 
