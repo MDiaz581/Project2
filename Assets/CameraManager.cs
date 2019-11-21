@@ -10,7 +10,7 @@ public class CameraManager : MonoBehaviour
     //Moves centerpoint away from the player, this means the camera looks slightly above the player rather than at the player
     public Vector3 offset;
 
-    //Angles Camera slightly
+    //Angles Camera slightly due to the LookAt function
     public float cameraYpos;
 
     //Speed at which the camera smooths the rotation

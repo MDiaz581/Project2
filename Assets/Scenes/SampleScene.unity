@@ -134,7 +134,7 @@ GameObject:
   - component: {fileID: 76570612}
   m_Layer: 0
   m_Name: Plane
-  m_TagString: Untagged
+  m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -630,7 +630,7 @@ GameObject:
   - component: {fileID: 952417299}
   m_Layer: 0
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -737,14 +737,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rb: {fileID: 952417299}
-  speed: 0
   maxSpeed: 50
-  handling: 75
-  driftHandling: 0
-  drift: 1.5
-  Deceleration: 20
+  deceleration: 20
   acceleration: 30
+  speed: 0
+  handling: 75
+  drift: 15
+  onGround: 0
   moving: 0
+  isDriftingLeft: 0
+  isDriftingRight: 0
+  airControl: 50
+  airHandling: 5
+  maxZrotation: 5
+  maxXrotation: 20
+  onEnabled: 1
 --- !u!1 &963194225
 GameObject:
   m_ObjectHideFlags: 0
@@ -954,7 +961,7 @@ GameObject:
   - component: {fileID: 1282649263}
   m_Layer: 0
   m_Name: Cube
-  m_TagString: Untagged
+  m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
