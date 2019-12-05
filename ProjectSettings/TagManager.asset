@@ -8,6 +8,17 @@ TagManager:
   - Boost
   - RightTrigger
   - LeftTrigger
+  - water1
+  - water2
+  - water3
+  - water4
+  - water5
+  - water6
+  - water7
+  - water8
+  - water9
+  - OoB
+  - water10
   layers:
   - Default
   - TransparentFX
