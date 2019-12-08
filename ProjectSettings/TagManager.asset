@@ -8,6 +8,7 @@ TagManager:
   - Boost
   - RightTrigger
   - LeftTrigger
+  - Checkpoint
   layers:
   - Default
   - TransparentFX
@@ -21,7 +22,7 @@ TagManager:
   - Trigger
   - Boost
   - Hitbox
-  - 
+  - Checkpoint
   - 
   - 
   - 

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class PlayerManager : MonoBehaviour
+public class PlayerManagerBackup : MonoBehaviour
 {
     [Header("Physics")]
 
@@ -31,10 +31,6 @@ public class PlayerManager : MonoBehaviour
     public int maxLap;
 
     public Text LapText;
-
-    public Text WinText;
-
-    public bool playerWon;
 
     [Header("Speed Variables")]
 
@@ -174,8 +170,6 @@ public class PlayerManager : MonoBehaviour
 
         currentLap = 1;
 
-        LapText.text = ("Lap: " + currentLap.ToString() + " / " + maxLap.ToString());
-
     }
 
     private void Update()
@@ -185,10 +179,7 @@ public class PlayerManager : MonoBehaviour
         eulerAngY = transform.localEulerAngles.y;
         eulerAngZ = transform.localEulerAngles.z;
 
-        
-
-       
-
+        LapText.text = ("Lap: " + currentLap.ToString() + " / " + maxLap.ToString());
 
         //Debug.Log("Y " + eulerAngY);
         //Debug.Log("X " + eulerAngX);
@@ -673,7 +664,6 @@ public class PlayerManager : MonoBehaviour
 
         checkpointTrigger pos = target.GetComponent<checkpointTrigger>();
 
-
         if (pos != null)
         {
             
@@ -683,26 +673,15 @@ public class PlayerManager : MonoBehaviour
                 Debug.Log("Hit " + pos.position);
                 Debug.Log("You are now " + currentCheckpoint);
 
-
             } else if(currentCheckpoint == 5 && pos.position == 0)
             {
                 Debug.Log("Hit " + pos.position);
                 Debug.Log("Lapped!");
-                
 
+                
                 currentLap += 1;
 
                 currentCheckpoint = pos.position;
-                LapText.text = ("Lap: " + currentLap.ToString() + " / " + maxLap.ToString());
-
-                if (currentLap > maxLap && !playerWon)
-                {
-
-                    LapText.text = ("  ");
-                    WinText.text = ("Player " + playerNumber + " Wins!");
-                    playerWon = true;
-                    
-                }
             }
         }
         
