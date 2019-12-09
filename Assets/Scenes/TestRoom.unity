@@ -24143,7 +24143,7 @@ MonoBehaviour:
   psBoost: {fileID: 45572181}
   currentCheckpoint: 0
   currentLap: 0
-  maxLap: 2
+  maxLap: 1
   LapText: {fileID: 1189076289}
   WinText: {fileID: 74447726}
   playerWon: 0
@@ -26972,7 +26972,7 @@ PrefabInstance:
     - target: {fileID: 4940517302949814379, guid: a65f123f278f61447b7c43db3d55cceb,
         type: 3}
       propertyPath: maxLap
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4940517302949814379, guid: a65f123f278f61447b7c43db3d55cceb,
         type: 3}
