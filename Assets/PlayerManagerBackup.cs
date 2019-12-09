@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class PlayerManager : MonoBehaviour
+public class PlayerManagerBackup : MonoBehaviour
 {
     [Header("Physics")]
 
@@ -31,10 +31,6 @@ public class PlayerManager : MonoBehaviour
     public int maxLap;
 
     public Text LapText;
-
-    public Text WinText;
-
-    public bool playerWon;
 
     [Header("Speed Variables")]
 
@@ -105,17 +101,6 @@ public class PlayerManager : MonoBehaviour
 
     [Header("Checking Bools")]
     public bool onGround;
-    public bool inwater1;
-    public bool inwater2;
-    public bool inwater3;
-    public bool inwater4;
-    public bool inwater5;
-    public bool inwater6;
-    public bool inwater7;
-    public bool inwater8;
-    public bool inwater9;
-    public bool inwater10;
-    public bool OoB;
     public bool moving;
 
     //Determines which direction the player is drifting in and locks them to it
@@ -185,8 +170,6 @@ public class PlayerManager : MonoBehaviour
 
         currentLap = 1;
 
-        LapText.text = ("Lap: " + currentLap.ToString() + " / " + maxLap.ToString());
-
     }
 
     private void Update()
@@ -196,10 +179,7 @@ public class PlayerManager : MonoBehaviour
         eulerAngY = transform.localEulerAngles.y;
         eulerAngZ = transform.localEulerAngles.z;
 
-        
-
-       
-
+        LapText.text = ("Lap: " + currentLap.ToString() + " / " + maxLap.ToString());
 
         //Debug.Log("Y " + eulerAngY);
         //Debug.Log("X " + eulerAngX);
@@ -641,63 +621,8 @@ public class PlayerManager : MonoBehaviour
 
         /*       ------------------------------------------Rotation Manager END----------------------------------                */
 
-        /*       ------------------------------------------Out of Bounds Manager----------------------------------                */
-        if (inwater1)
-        {
-            transform.position = new Vector3(0,1,141);
-            inwater1 = false;
-        }
-        if (inwater2)
-        {
-            transform.position = new Vector3(690, 11, 697);
-            inwater2 = false;
-        }
-        if (inwater3)
-        {
-            transform.position = new Vector3(690, 11, 850);
-            inwater3 = false;
-        }
-        if (inwater4)
-        {
-            transform.position = new Vector3(690, 11, 1330);
-            inwater4 = false;
-        }
-        if (inwater5)
-        {
-            transform.position = new Vector3(790, 11, 1630);
-            inwater5 = false;
-        }
-        if (inwater6)
-        {
-            transform.position = new Vector3(790, 1, 1930);
-            inwater6 = false;
-        }
-        if (inwater7)
-        {
-            transform.position = new Vector3(790, 1, 2480);
-            inwater7 = false;
-        }
-        if (inwater8)
-        {
-            transform.position = new Vector3(760, 21, 2840);
-            inwater8 = false;
-        }
-        if (inwater9)
-        {
-            transform.position = new Vector3(575, 11, 3010);
-            inwater9 = false;
-        }
-        if (inwater10)
-        {
-            transform.position = new Vector3(-292, 34, 11);
-            inwater10 = false;
-        }
-        if (OoB)
-        {
-            transform.position = new Vector3(0, 1, 400);
-            OoB = false;
-        }
-        /*       ------------------------------------------Out of Bounds END----------------------------------                */
+
+
     }
 
 
@@ -713,50 +638,6 @@ public class PlayerManager : MonoBehaviour
                 //Checks if the player is on the ground, this affects the players deceleration, and ability to move.
                 onGround = true;
 
-        }
-        if (collision.gameObject.tag == "water1")
-        {
-            inwater1 = true;
-        }
-        if (collision.gameObject.tag == "water2")
-        {
-            inwater2 = true;
-        }
-        if (collision.gameObject.tag == "water3")
-        {
-            inwater3 = true;
-        }
-        if (collision.gameObject.tag == "water4")
-        {
-            inwater4 = true;
-        }
-        if (collision.gameObject.tag == "water5")
-        {
-            inwater5 = true;
-        }
-        if (collision.gameObject.tag == "water6")
-        {
-            inwater6 = true;
-        }
-        if (collision.gameObject.tag == "water7")
-        {
-            inwater7 = true;
-        }
-        if (collision.gameObject.tag == "water8")
-        {
-            inwater8 = true;
-        }
-        if (collision.gameObject.tag == "water9")
-        {
-            inwater9 = true;
-        }
-        if (collision.gameObject.tag == "water10")
-        {
-            inwater10 = true;
-        }
-        if (collision.gameObject.tag == "OoB")
-        {
-            OoB = true;
         }
     }
 
@@ -783,7 +664,6 @@ public class PlayerManager : MonoBehaviour
 
         checkpointTrigger pos = target.GetComponent<checkpointTrigger>();
 
-
         if (pos != null)
         {
             
@@ -793,26 +673,15 @@ public class PlayerManager : MonoBehaviour
                 Debug.Log("Hit " + pos.position);
                 Debug.Log("You are now " + currentCheckpoint);
 
-
             } else if(currentCheckpoint == 5 && pos.position == 0)
             {
                 Debug.Log("Hit " + pos.position);
                 Debug.Log("Lapped!");
-                
 
+                
                 currentLap += 1;
 
                 currentCheckpoint = pos.position;
-                LapText.text = ("Lap: " + currentLap.ToString() + " / " + maxLap.ToString());
-
-                if (currentLap > maxLap && !playerWon)
-                {
-
-                    LapText.text = ("  ");
-                    WinText.text = ("Player " + playerNumber + " Wins!");
-                    playerWon = true;
-                    
-                }
             }
         }
         
